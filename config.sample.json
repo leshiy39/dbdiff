@@ -1,0 +1,17 @@
+{
+    "DB1": {
+        "dbname": "",
+        "user": "",
+        "password": "",
+        "host": "",
+        "port": 5432
+    },
+
+    "DB2": {
+        "dbname": "",
+        "user": "",
+        "password": "",
+        "host": "",
+        "port": 5432
+    }
+}

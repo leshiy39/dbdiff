@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>Сравнение БД — подключение</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="p-3">
+<div class="container">
+    <h1 class="mb-4">Подключение к базам данных</h1>
+
+    <form method="POST" id="dbForm">
+        <div class="row">
+            <div class="col-md-6">
+                <h4>База 1</h4>
+                <div class="mb-2">
+                    <label class="form-label">Имя БД</label>
+                    <input name="db1_name" id="db1_name" class="form-control" required>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Пользователь</label>
+                    <input name="db1_user" id="db1_user" class="form-control" required>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Пароль</label>
+                    <input type="password" name="db1_pass" id="db1_pass" class="form-control" required>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Хост</label>
+                    <input name="db1_host" id="db1_host" class="form-control" value="localhost" required>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Порт</label>
+                    <input name="db1_port" id="db1_port" class="form-control" value="5432" required>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <h4>База 2</h4>
+                <div class="mb-2">
+                    <label class="form-label">Имя БД</label>
+                    <input name="db2_name" id="db2_name" class="form-control" required>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Пользователь</label>
+                    <input name="db2_user" id="db2_user" class="form-control" required>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Пароль</label>
+                    <input type="password" name="db2_pass" id="db2_pass" class="form-control" required>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Хост</label>
+                    <input name="db2_host" id="db2_host" class="form-control" value="localhost" required>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Порт</label>
+                    <input name="db2_port" id="db2_port" class="form-control" value="5432" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3 mt-3">
+            <label for="jsonFile" class="form-label">Загрузить JSON с конфигами</label>
+            <input type="file" id="jsonFile" accept=".json" class="form-control">
+        </div>
+
+        <div class="mt-3">
+            <button class="btn btn-primary" type="submit">Сравнить</button>
+        </div>
+    </form>
+</div>
+
+<script>
+document.getElementById('jsonFile').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const data = JSON.parse(e.target.result);
+
+            // Проверяем и заполняем поля DB1
+            if (data.DB1) {
+                document.getElementById('db1_name').value = data.DB1.dbname || '';
+                document.getElementById('db1_user').value = data.DB1.user || '';
+                document.getElementById('db1_pass').value = data.DB1.password || '';
+                document.getElementById('db1_host').value = data.DB1.host || 'localhost';
+                document.getElementById('db1_port').value = data.DB1.port || '5432';
+            }
+
+            // Проверяем и заполняем поля DB2
+            if (data.DB2) {
+                document.getElementById('db2_name').value = data.DB2.dbname || '';
+                document.getElementById('db2_user').value = data.DB2.user || '';
+                document.getElementById('db2_pass').value = data.DB2.password || '';
+                document.getElementById('db2_host').value = data.DB2.host || 'localhost';
+                document.getElementById('db2_port').value = data.DB2.port || '5432';
+            }
+        } catch(err) {
+            alert('Ошибка парсинга JSON: ' + err.message);
+        }
+    };
+    reader.readAsText(file);
+});
+</script>
+
+</body>
+</html>
